@@ -1,10 +1,10 @@
-import { Invoice } from "@/types/invoice";
-import { InvoiceStatus } from "@/types/invoiceStatus";
+import Link from "next/link";
+import { Invoice } from "@/types/Invoice";
+import { InvoiceStatus } from "@/types/InvoiceStatus";
 
 export default function InvoicesTable({ invoices } : { invoices: Invoice[] }) {
     return (
         <>
-            <h1>Invoices</h1>
             <table className="min-w-full border border-gray-300">
                 <thead>
                     <tr className="text-left">
@@ -14,6 +14,7 @@ export default function InvoicesTable({ invoices } : { invoices: Invoice[] }) {
                         <th className="py-2 px-4 bg-gray-100 text-black border-b">Company</th>
                         <th className="py-2 px-4 bg-gray-100 text-black border-b">Total</th>
                         <th className="py-2 px-4 bg-gray-100 text-black border-b">Status</th>
+                        <th className="py-2 px-4 bg-gray-100 text-black border-b"> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,7 +28,7 @@ export default function InvoicesTable({ invoices } : { invoices: Invoice[] }) {
                             <td className="py-2 px-4 border-b">
                                 {invoice.status != InvoiceStatus.Paid &&
                                     <span className="inline-block px-2 py-1 text-xs font-semibold leading-none text-red-800 bg-red-100 rounded-full">
-                                        {new Date() > invoice.dueDate ? InvoiceStatus[InvoiceStatus.Outstanding] : InvoiceStatus[InvoiceStatus.Late]}
+                                        {new Date(invoice.dueDate) > new Date() ? InvoiceStatus[InvoiceStatus.Outstanding] : InvoiceStatus[InvoiceStatus.Late]}
                                     </span>
                                 }
                                 {invoice.status == InvoiceStatus.Paid &&
@@ -35,6 +36,9 @@ export default function InvoicesTable({ invoices } : { invoices: Invoice[] }) {
                                         {InvoiceStatus[InvoiceStatus.Paid]}
                                     </span>
                                 }
+                            </td>
+                            <td className="py-2 px-4 border-b">
+                                <Link href={`/invoice/${invoice.id}`} className="inline-block px-6 py-1 bg-gray-100 text-black rounded-md">View</Link>
                             </td>
                         </tr>
                     ))}

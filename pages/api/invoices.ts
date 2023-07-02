@@ -1,6 +1,6 @@
-import { Invoice } from '@/types/invoice'
-import { InvoiceStatus } from '@/types/invoiceStatus'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { Invoice } from '@/types/Invoice'
+import { InvoiceStatus } from '@/types/InvoiceStatus'
 
 const invoices: Invoice[] =
 [
@@ -77,9 +77,10 @@ const invoices: Invoice[] =
         status: InvoiceStatus.Outstanding
     }
 ]
+
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Invoice[]>
 ) {
-  res.status(200).json(invoices)
+    res.status(200).json(invoices)
 }

@@ -1,5 +1,5 @@
-import { InvoiceItem } from "./invoiceItem"
-import { InvoiceStatus } from "./invoiceStatus"
+import { InvoiceItem } from "./InvoiceItem"
+import { InvoiceStatus } from "./InvoiceStatus"
 
 export type Invoice = {
     id: number
@@ -9,8 +9,8 @@ export type Invoice = {
     contact: string
     email: string
     note?: string
-    items: InvoiceItem[]
+    items?: InvoiceItem[]
     tax: number
     total: number
-    status?: InvoiceStatus
+    status: InvoiceStatus
 }

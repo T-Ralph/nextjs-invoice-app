@@ -1,14 +1,10 @@
-import '../app/globals.css'
+import '@/app/globals.css'
 import { Inter } from 'next/font/google'
-import HeadTitle from './headTitle'
+import HeadTitle from './HeadTitle'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
         <HeadTitle />
