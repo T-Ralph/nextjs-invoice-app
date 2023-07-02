@@ -1,13 +1,11 @@
 import { useRouter } from "next/router"
 import { Invoice } from "@/types/Invoice"
 import { InvoiceStatus } from "@/types/InvoiceStatus"
+import { GetNewInvoiceId, SaveInvoice } from "@/data/store";
 
 export default function InvoiceForm() {
     const router = useRouter()
-
-    const invoicesString: string = localStorage.getItem("Invoices") ?? "[]";
-    const invoicesData: Invoice[] = JSON.parse(invoicesString)
-    const newInvoiceId = invoicesData.sort((invoice1, invoice2) => Number(invoice1.id < invoice2.id))[0].id + 1
+    const newInvoiceId = GetNewInvoiceId()
 
     const createInvoice = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -39,10 +37,7 @@ export default function InvoiceForm() {
         const response = await fetch(apiURL, options)
         const result: Invoice = await response.json()
 
-        const invoicesString: string = localStorage.getItem("Invoices") ?? "[]";
-        let invoices: Invoice[] = JSON.parse(invoicesString)
-        invoices.push(result)
-        localStorage.setItem("Invoices", JSON.stringify(invoices))
+        SaveInvoice(result)
 
         router.push(`/invoice/${result.id}`)
         alert("Invoice Created Successfully!")

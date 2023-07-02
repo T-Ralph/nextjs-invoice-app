@@ -5,14 +5,12 @@ import type { NextPageWithLayout } from '../_app'
 import Layout from '@/components/Layout'
 import InvoiceView from '@/components/InvoiceView'
 import { Invoice } from '@/types/Invoice'
+import { GetInvoice } from '@/data/store'
  
 const ViewInvoice: NextPageWithLayout = () => {
     const router = useRouter()
     const invoiceId: Number = Number(router.query.id)
-
-    const invoicesString: string = localStorage.getItem("Invoices") ?? "[]";
-    const invoicesData: Invoice[] = JSON.parse(invoicesString)
-    const invoice = invoicesData.find(invoice => invoice.id === invoiceId)
+    const invoice = GetInvoice(Number(invoiceId))
 
     if (invoice === undefined) {
         return <>Invoice Not Found!</>

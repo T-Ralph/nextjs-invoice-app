@@ -5,6 +5,7 @@ import type { NextPageWithLayout } from './_app'
 import Layout from '@/components/Layout'
 import InvoicesTable from '@/components/InvoicesTable'
 import { Invoice } from '@/types/Invoice'
+import { GetInvoices, SaveInvoices } from '@/data/store'
  
 const Index: NextPageWithLayout = () => {
     const fetcher = (apiURL: string) => fetch(apiURL).then(res => res.json())
@@ -13,16 +14,10 @@ const Index: NextPageWithLayout = () => {
     if (error) return <div>Failed to load invoices</div>
     if (!invoices) return <div>Loading...</div>
 
-    let invoicesString: string = localStorage.getItem("Invoices") ?? "[]";
-    let invoicesData: Invoice[] = JSON.parse(invoicesString)
-    invoicesData.forEach(invoice => {
-      if (invoices.find(i => i.id === invoice.id) === undefined){
-        invoices.push(invoice)
-      }
-    })
-    localStorage.setItem("Invoices", JSON.stringify(invoices))
+    SaveInvoices(invoices)
+    const allInvoices = GetInvoices()
 
-    return <InvoicesTable invoices={invoices}/>
+    return <InvoicesTable invoices={allInvoices}/>
 }
  
 Index.getLayout = function getLayout(element: ReactElement) {
