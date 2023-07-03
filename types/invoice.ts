@@ -10,7 +10,6 @@ export type Invoice = {
     email: string
     note?: string
     items?: InvoiceItem[]
-    tax: number
     total: number
     status: InvoiceStatus
 }

@@ -24,7 +24,6 @@ const invoices: Invoice[] =
                 hours: 10
             }
         ],
-        tax: 10,
         total: 2200,
         status: InvoiceStatus.Paid
     },
@@ -48,7 +47,6 @@ const invoices: Invoice[] =
                 hours: 10
             }
         ],
-        tax: 10,
         total: 1980,
         status: InvoiceStatus.Paid
     },
@@ -72,7 +70,6 @@ const invoices: Invoice[] =
                 hours: 10
             }
         ],
-        tax: 10,
         total: 1760,
         status: InvoiceStatus.Outstanding
     }

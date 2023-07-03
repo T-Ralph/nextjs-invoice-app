@@ -11,5 +11,9 @@ export default function handler(
     }
 
     const invoice: Invoice = req.body
+
+    //Implement email service
+    //Send Invoice to invoice.email
+
     res.status(200).json(invoice)
 }

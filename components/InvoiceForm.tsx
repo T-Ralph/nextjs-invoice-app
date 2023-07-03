@@ -1,11 +1,43 @@
+import { useState } from "react"
 import { useRouter } from "next/router"
 import { Invoice } from "@/types/Invoice"
 import { InvoiceStatus } from "@/types/InvoiceStatus"
-import { GetNewInvoiceId, SaveInvoice } from "@/data/store";
+import { GetNewInvoiceId, SaveInvoice } from "@/data/store"
+import { InvoiceItem } from "@/types/InvoiceItem"
 
 export default function InvoiceForm() {
     const router = useRouter()
     const newInvoiceId = GetNewInvoiceId()
+    const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
+    const [total, setTotal] = useState<number>(0);
+
+    const invoiceItemChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedInvoiceItems = [...invoiceItems]
+
+        if (event.currentTarget.name === "item") {
+            updatedInvoiceItems[index].item = event.currentTarget.value
+        }
+
+        if (event.currentTarget.name === "rate") {
+            updatedInvoiceItems[index].rate = Number(event.currentTarget.value)
+        }
+
+        if (event.currentTarget.name === "hours") {
+            updatedInvoiceItems[index].hours = Number(event.currentTarget.value)
+        }
+        
+        setInvoiceItems(updatedInvoiceItems)
+        setTotal(invoiceItems.reduce((sum: number, item: InvoiceItem) => sum + (item.rate * item.hours), 0))
+    }
+
+    const addInvoiceItem = () => {
+        const invoiceItem: InvoiceItem = {
+            item: "",
+            rate: 0,
+            hours: 0
+        }
+        setInvoiceItems([...invoiceItems, invoiceItem])
+    }
 
     const createInvoice = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -18,9 +50,8 @@ export default function InvoiceForm() {
           contact: event.currentTarget.contact.value,
           email: event.currentTarget.email.value,
           note: event.currentTarget.note.value,
-          items: [],
-          tax: Number(event.currentTarget.tax.value),
-          total: Number(event.currentTarget.total.value),
+          items: invoiceItems,
+          total: total,
           status: Number(event.currentTarget.status.value)
         }
      
@@ -77,13 +108,9 @@ export default function InvoiceForm() {
                 </div>
 
                 <div className="w-full md:w-1/3 px-2">
-                    <label className="block mb-2 font-medium text-gray-700">Tax</label>
-                    <input type="number" name="tax" id="tax" defaultValue="0" required className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"/>
                 </div>
 
                 <div className="w-full md:w-1/3 px-2">
-                    <label className="block mb-2 font-medium text-gray-700">Total</label>
-                    <input type="number" name="total" id="total" defaultValue="0" required className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"/>
                 </div>
 
                 <div className="w-full md:w-1/3 px-2">
@@ -100,7 +127,55 @@ export default function InvoiceForm() {
                     <textarea name="note" id="note" className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"></textarea>
                 </div>
 
-                <div className="w-full md:w-1/3 px-2">
+                {invoiceItems.map((invoiceItem, index) => (
+                    <div className="flex flex-wrap mx-1 my-1 w-full px-2" key={index}>
+                        <div className="w-full md:w-1/4 px-2">
+                            <label className="block mb-2 font-medium text-gray-700">Item</label>
+                            <input type="text" name="item" defaultValue={invoiceItem.item} onChange={(event) => invoiceItemChange(index, event)} className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"/>
+                        </div>
+
+                        <div className="w-full md:w-1/4 px-2">
+                            <label className="block mb-2 font-medium text-gray-700">Rate</label>
+                            <input type="number" name="rate" defaultValue={invoiceItem.rate} onChange={(event) => invoiceItemChange(index, event)} className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"/>
+                        </div>
+
+                        <div className="w-full md:w-1/4 px-2">
+                            <label className="block mb-2 font-medium text-gray-700">Hours</label>
+                            <input type="number" name="hours" defaultValue={invoiceItem.hours} onChange={(event) => invoiceItemChange(index, event)} className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"/>
+                        </div>
+
+                        <div className="w-full md:w-1/4 px-2">
+                            <label className="block mb-2 font-medium text-gray-700">Item Total</label>
+                            <span  className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">{invoiceItem.rate * invoiceItem.hours}</span>
+                        </div>
+                    </div>
+                ))}
+
+                <div className="w-full px-2 my-5">
+                    <button type="button" className="block w-full px-4 py-2 bg-gray-100 text-black rounded-md" onClick={addInvoiceItem}>Add Invoice Item</button>
+                </div>
+
+                <div className="flex flex-wrap mx-1 my-1 w-full px-2">
+                    <div className="w-full md:w-1/4 px-2">
+                        <span className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 font-bold">Total ($)</span>
+                    </div>
+
+                    <div className="w-full md:w-1/4 px-2">
+                        <span className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 "></span>
+                    </div>
+
+                    <div className="w-full md:w-1/4 px-2">
+                        <span className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700"></span>
+                    </div>
+
+                    <div className="w-full md:w-1/4 px-2">
+                        <span className="block w-full px-4 py-2 mb-4 leading-tight text-gray-700 font-bold">
+                            ${total}
+                        </span>
+                    </div>
+                </div>
+
+                <div className="w-full px-2 my-5">
                     <button type="submit" className="block w-full px-4 py-2 bg-gray-100 text-black rounded-md">Create Invoice</button>
                 </div>
             </form>
