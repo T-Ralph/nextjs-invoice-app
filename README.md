@@ -43,8 +43,8 @@
 
 ## Limitations
 - No unit tests
-- No database (`LocalStorage` is used to mimmick a database but only stores data on the frontend, but, not on the backend API)
-- API endpoints only mocks and mimmicks what a typical backend would do
+- No database (`LocalStorage` is used to mimic a database but only stores data on the frontend, but, not on the backend API)
+- API endpoints only mock and mimic what a typical backend would do
 - Can not send invoice emails due to limited free email services
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
