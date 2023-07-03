@@ -5,7 +5,7 @@ import type { NextPageWithLayout } from './_app'
 import Layout from '@/components/Layout'
 import InvoicesTable from '@/components/InvoicesTable'
 import { Invoice } from '@/types/Invoice'
-import { GetInvoices, SaveInvoices } from '@/data/store'
+import { GetInvoices, SaveInvoices } from '@/data/Store'
  
 const Index: NextPageWithLayout = () => {
     const fetcher = (apiURL: string) => fetch(apiURL).then(res => res.json())

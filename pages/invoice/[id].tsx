@@ -4,8 +4,7 @@ import Link from 'next/link'
 import type { NextPageWithLayout } from '../_app'
 import Layout from '@/components/Layout'
 import InvoiceView from '@/components/InvoiceView'
-import { Invoice } from '@/types/Invoice'
-import { GetInvoice } from '@/data/store'
+import { GetInvoice } from '@/data/Store'
  
 const ViewInvoice: NextPageWithLayout = () => {
     const router = useRouter()

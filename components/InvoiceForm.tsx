@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useRouter } from "next/router"
 import { Invoice } from "@/types/Invoice"
 import { InvoiceStatus } from "@/types/InvoiceStatus"
-import { GetNewInvoiceId, SaveInvoice } from "@/data/store"
+import { GetNewInvoiceId, SaveInvoice } from "@/data/Store"
 import { InvoiceItem } from "@/types/InvoiceItem"
 
 export default function InvoiceForm() {
