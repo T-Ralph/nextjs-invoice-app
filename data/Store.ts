@@ -3,12 +3,23 @@ import { Invoice } from "@/types/Invoice"
 const LocalStorageInvoiceKey : string = "Invoices"
 
 const GetInvoicesFromLocalStorage = () : Invoice[] => {
-    let invoicesString: string = localStorage.getItem(LocalStorageInvoiceKey) ?? "[]";
-    let invoicesData: Invoice[] = JSON.parse(invoicesString)
-    return invoicesData
+    try {
+        let invoicesString: string = localStorage.getItem(LocalStorageInvoiceKey) ?? "[]";
+        let invoicesData: Invoice[] = JSON.parse(invoicesString)
+        return invoicesData
+    } catch {
+        // localStorage not available on server-side render
+        return []
+    }
 }
 
-const SetInvoicesInLocalStorage = (invoices : Invoice[]) => localStorage.setItem(LocalStorageInvoiceKey, JSON.stringify(invoices))
+const SetInvoicesInLocalStorage = (invoices : Invoice[]) => {
+    try {
+        localStorage.setItem(LocalStorageInvoiceKey, JSON.stringify(invoices))
+    } catch {
+        // localStorage not available on server-side render
+    }
+}
 
 export function SaveInvoices(invoices : Invoice[]) {
     GetInvoices().forEach(invoice => {
@@ -39,5 +50,9 @@ export function GetInvoice(id : number) : Invoice | undefined {
 }
 
 export function GetNewInvoiceId() : number {
-    return GetInvoices().sort((invoice1, invoice2) => Number(invoice1.id < invoice2.id))[0].id + 1
+    const invoicesData = GetInvoices()
+
+    return invoicesData.length > 0 ?
+            invoicesData.sort((invoice1, invoice2) => Number(invoice1.id < invoice2.id))[0].id + 1 :
+            1
 }
