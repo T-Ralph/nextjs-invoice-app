@@ -1,13 +1,7 @@
 # Invoice App
 
-## Work Steps
-- Day 1 -> Read and understood the requirements, researched online invoice apps, drew mockups: 1 hour
-- Day 2 -> Developed the app: 3 hours
-- Day 3 -> Additional cleanups, wrote documentation, and implemented hosting: 1 hour
-
 ## URLs
-- [Github](https://github.com/T-Ralph/nextjs-invoice-app) - https://github.com/T-Ralph/nextjs-invoice-app
-- [Live Demo](https://nextjs-invoice-app-five.vercel.app/) - https://nextjs-invoice-app-five.vercel.app/
+- [Live Demo on Vercel](https://nextjs-invoice-app-five.vercel.app/) 
 
 ## Tech Stack
 - [NextJS](https://nextjs.org/) Framework based on [React](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
